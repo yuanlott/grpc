@@ -203,8 +203,14 @@ def show_message(desc: Descriptor, depth=0, shown=None):
 
 def main():
     args = parse_args()
+    st.set_page_config(
+        page_title="Proto Explorer",
+        page_icon="🧭",
+        layout="wide",
+        initial_sidebar_state="expanded"
+    )
     st.title("🧭 Proto Explorer")
-    st.caption("Infomation retrieved from FieldDescriptor of _pb2 modules")
+    st.caption("Infomation retrieved from FieldDescriptor of compiled _pb2 modules")
 
     module_name = args.proto_module
     custom_path = args.load_path
