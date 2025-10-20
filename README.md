@@ -38,7 +38,7 @@ pip install proto-explorer
 proto-explorer --proto_module <compiled_protobuf_pb2_module> [--load_path </path/to/compiled/protobuf>]
 ```
 
-## Example:
+## ️✍️ Example:
 
 1. Clone a test Protobuf set (example: Google Pub/Sub):
 ```bash
