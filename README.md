@@ -1,17 +1,17 @@
 # Proto Explorer
 *A lightweight, interactive browser for exploring Protobuf/gRPC hierarchies*
 
-[![Python](https://img.shields.io/badge/python-3.8%2B-blue)]()
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue)]()
 [![Streamlit](https://img.shields.io/badge/streamlit-app-red)](https://streamlit.io/)
 [![Protobuf](https://img.shields.io/badge/protobuf-compiler-green)]()
 
 Proto Explorer lets you **visually explore Protobuf message hierarchies** (`*.proto` files) using only the compiled Python files (`*_pb2.py`). No `.proto` files or regeneration required.
 
-✅ Expand nested message fields
-✅ Show `oneof` group hierarchy
-✅ Correctly detect `map<key, value>` fields
-✅ Load `_pb2.py` from custom paths
-✅ No server or DB needed — runs locally
+✅ Expand nested message fields  
+✅ Show `oneof` group hierarchy  
+✅ Correctly detect `map<key, value>` fields  
+✅ Load `_pb2.py` from custom paths  
+✅ No server or DB needed — runs locally  
 
 ---
 
@@ -24,5 +24,26 @@ Proto Explorer lets you **visually explore Protobuf message hierarchies** (`*.pr
 
 ---
 
-## ✨ Example Output
+## 🔧 Installation
 
+Clone the repository and install dependencies:
+```text
+poetry install
+```
+Activate the Python virtual environment:
+```text
+source $(poetry env info --path)/bin/activate
+```
+---
+
+## ▶️ Run the App
+
+```text
+proto-explorer --proto_module <compiled_protobuf_pb2_module> [--load_path </path/to/compiled/protobuf>]
+```
+
+Example:
+
+```text
+proto-explorer --proto_module myproject.datamanager.users_pb2 --load_path ~/protos/compiled
+```
