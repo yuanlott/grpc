@@ -7,6 +7,8 @@ authors = [
 ]
 license = "MIT"
 license-files = ["LICENSE"]
+repository = "https://github.com/yuanlott/grpc"
+keywords = ["protobuf", "grpc", "schema", "explorer", "streamlit"]
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
