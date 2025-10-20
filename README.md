@@ -34,12 +34,42 @@ pip install proto-explorer
 
 ## ▶️ Run the App
 
-```text
+```bash
 proto-explorer --proto_module <compiled_protobuf_pb2_module> [--load_path </path/to/compiled/protobuf>]
 ```
 
-Example:
+## Example:
 
-```text
-proto-explorer --proto_module myproject.datamanager.users_pb2 --load_path ~/protos/compiled
+1. Clone a test Protobuf set (example: Google Pub/Sub):
+```bash
+git clone https://github.com/googleapis/googleapis.git
+cd googleapis
 ```
+
+2. Compile the .proto files to _pb2.py:
+```bash
+python -m grpc_tools.protoc \
+  --proto_path=. \
+  --python_out=. \
+  google/pubsub/v1/*.proto \
+  google/api/*.proto
+```
+
+Confirm that the following _pb2.py file exists:
+```bash
+google/pubsub/v1/pubsub_pb2.py
+```
+
+3. Launch Proto Explorer:
+```bash
+proto-explorer --proto_module google.pubsub.v1.pubsub_pb2 --load_path .
+```
+```text
+Launching Proto Explorer...
+
+  You can now view your Streamlit app in your browser.
+
+  Local URL: http://localhost:8501
+```
+Now open your browser and go to: http://localhost:8501/
+Enjoy exploring your Protobuf message hierarchy!
