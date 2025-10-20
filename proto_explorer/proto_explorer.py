@@ -24,18 +24,21 @@ TYPE_NAMES: Dict[int, str] = {
     if k.startswith("TYPE_")
 }
 
+
 def parse_args():
-    parser = argparse.ArgumentParser(description="Interactive viewer for gRPC .proto hierarchies.")
+    parser = argparse.ArgumentParser(
+        description="Interactive viewer for gRPC .proto hierarchies."
+    )
     parser.add_argument(
         "--load_path",
         "-l",
         help="Path to directory containing _pb2.py files (will added to runtime sys.path).",
-        required=True,
+        required=False,
     )
     parser.add_argument(
         "--proto_module",
         "-p",
-        help="Python module name of the _pb2 file to load, e.g. myproject.api.v1.user_pb2.",
+        help="Python module name of the _pb2 file to load, e.g. myproject.datamanager.users_pb2.",
         required=True,
     )
     return parser.parse_args()
@@ -92,9 +95,14 @@ def show_message(desc: Descriptor, depth=0, shown=None):
             # Resolve readable type name
             if field.type == FieldDescriptor.TYPE_MESSAGE and field.message_type:
                 if is_map:
-                    key_type = TYPE_NAMES.get(field.message_type.fields_by_name["key"].type, "UNKNOWN")
+                    key_type = TYPE_NAMES.get(
+                        field.message_type.fields_by_name["key"].type, "UNKNOWN"
+                    )
                     value_field = field.message_type.fields_by_name["value"]
-                    if value_field.type == FieldDescriptor.TYPE_MESSAGE and value_field.message_type:
+                    if (
+                        value_field.type == FieldDescriptor.TYPE_MESSAGE
+                        and value_field.message_type
+                    ):
                         value_type = value_field.message_type.full_name
                     else:
                         value_type = TYPE_NAMES.get(value_field.type, "UNKNOWN")
@@ -104,7 +112,9 @@ def show_message(desc: Descriptor, depth=0, shown=None):
             elif field.type == FieldDescriptor.TYPE_ENUM and field.enum_type:
                 type_name = field.enum_type.full_name
             else:
-                type_name = getattr(field, "type_name", None) or TYPE_NAMES.get(field.type, str(field.type))
+                type_name = getattr(field, "type_name", None) or TYPE_NAMES.get(
+                    field.type, str(field.type)
+                )
 
             # Field label
             label = f"- {field.name}: {type_name}"
@@ -112,7 +122,11 @@ def show_message(desc: Descriptor, depth=0, shown=None):
                 label += " [repeated]"
 
             # Render message field recursively
-            if field.type == FieldDescriptor.TYPE_MESSAGE and not is_map and field.message_type:
+            if (
+                field.type == FieldDescriptor.TYPE_MESSAGE
+                and not is_map
+                and field.message_type
+            ):
                 st.markdown(f"{' ' * depth * 2}{label}")
                 show_message(field.message_type, depth + 1, shown)
             else:
@@ -128,11 +142,19 @@ def show_message(desc: Descriptor, depth=0, shown=None):
                         and field.message_type.GetOptions().map_entry
                     )
 
-                    if field.type == FieldDescriptor.TYPE_MESSAGE and field.message_type:
+                    if (
+                        field.type == FieldDescriptor.TYPE_MESSAGE
+                        and field.message_type
+                    ):
                         if is_map:
-                            key_type = TYPE_NAMES.get(field.message_type.fields_by_name["key"].type, "UNKNOWN")
+                            key_type = TYPE_NAMES.get(
+                                field.message_type.fields_by_name["key"].type, "UNKNOWN"
+                            )
                             value_field = field.message_type.fields_by_name["value"]
-                            if value_field.type == FieldDescriptor.TYPE_MESSAGE and value_field.message_type:
+                            if (
+                                value_field.type == FieldDescriptor.TYPE_MESSAGE
+                                and value_field.message_type
+                            ):
                                 value_type = value_field.message_type.full_name
                             else:
                                 value_type = TYPE_NAMES.get(value_field.type, "UNKNOWN")
@@ -142,14 +164,20 @@ def show_message(desc: Descriptor, depth=0, shown=None):
                     elif field.type == FieldDescriptor.TYPE_ENUM and field.enum_type:
                         type_name = field.enum_type.full_name
                     else:
-                        type_name = getattr(field, "type_name", None) or TYPE_NAMES.get(field.type, str(field.type))
+                        type_name = getattr(field, "type_name", None) or TYPE_NAMES.get(
+                            field.type, str(field.type)
+                        )
 
                     label = f"- {field.name}: {type_name}"
 
                     if field.is_repeated and not is_map:
                         label += " [repeated]"
 
-                    if field.type == FieldDescriptor.TYPE_MESSAGE and not is_map and field.message_type:
+                    if (
+                        field.type == FieldDescriptor.TYPE_MESSAGE
+                        and not is_map
+                        and field.message_type
+                    ):
                         st.markdown(f"{' ' * (depth + 1) * 2}{label}")
                         show_message(field.message_type, depth + 2, shown)
                     else:
