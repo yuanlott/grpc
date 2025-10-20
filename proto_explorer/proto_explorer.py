@@ -8,6 +8,8 @@ from google.protobuf.descriptor import Descriptor, FieldDescriptor
 from typing import Dict
 
 
+GITHUB_URL = "https://github.com/yuanlott/grpc"
+
 # A mapping from protobuf field type integer values to their corresponding
 # string names. Created by inverting the FieldDescriptor.TYPE_* constants.
 # No official constant table is exported by the protobuf package for numeric
@@ -209,8 +211,26 @@ def main():
         layout="wide",
         initial_sidebar_state="expanded"
     )
-    st.title("🧭 Proto Explorer")
-    st.caption("Infomation retrieved from FieldDescriptor of compiled _pb2 modules")
+    # Header layout
+    col1, col2 = st.columns([0.8, 0.2])
+    with col1:
+        st.title("🧭 Proto Explorer")
+        st.caption("Interactive Protobuf Explorer for compiled *_pb2.py modules")
+
+    with col2:
+        st.markdown(
+            f"""
+            <a href="{GITHUB_URL}" target="_blank">
+                <img src="https://img.shields.io/badge/GitHub-Repo-black?style=for-the-badge&logo=github" />
+            </a>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    with st.sidebar:
+        st.markdown("### Proto Explorer")
+        st.markdown("Navigate gRPC message hierarchies.")
+        st.markdown("---")
 
     module_name = args.proto_module
     custom_path = args.load_path
