@@ -1,6 +1,6 @@
 [project]
 name = "proto-explorer"
-version = "0.1.0"
+version = "0.2.0"
 description = "A tool to visualize .proto file hierarchies"
 authors = [
     {name = "Lei Yuan",email = "lee14159@gmail.com"}

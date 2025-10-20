@@ -41,7 +41,24 @@ def parse_args():
         help="Python module name of the _pb2 file to load, e.g. myproject.datamanager.users_pb2.",
         required=True,
     )
-    return parser.parse_args()
+    args = parser.parse_args()
+
+    # Validate --load_path
+    if args.load_path:
+        abs_path = os.path.abspath(args.load_path)
+        if not os.path.isdir(abs_path):
+            raise ValueError(f"--load_path '{args.load_path}' is not a valid directory")
+        sys.path.insert(0, abs_path)
+
+    # Validate --module import
+    spec = importlib.util.find_spec(args.proto_module)
+    if spec is None:
+        raise ValueError(
+            f"Cannot import module '{args.proto_module}'. "
+            f"Ensure it exists and check --load_path"
+        )
+
+    return args
 
 
 @st.cache_resource

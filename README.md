@@ -28,11 +28,7 @@ Proto Explorer lets you **visually explore Protobuf message hierarchies** (`*.pr
 
 Clone the repository and install dependencies:
 ```text
-poetry install
-```
-Activate the Python virtual environment:
-```text
-source $(poetry env info --path)/bin/activate
+pip install proto-explorer
 ```
 ---
 
