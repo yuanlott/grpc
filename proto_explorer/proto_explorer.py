@@ -33,13 +33,13 @@ def parse_args():
     )
     parser.add_argument(
         "--load_path",
-        "-l",
+        "-p",
         help="Path to directory containing _pb2.py files (will added to runtime sys.path).",
         required=False,
     )
     parser.add_argument(
         "--proto_module",
-        "-p",
+        "-m",
         help="Python module name of the _pb2 file to load, e.g. myproject.datamanager.users_pb2.",
         required=True,
     )

@@ -35,7 +35,7 @@ pip install proto-explorer
 ## ▶️ Run the App
 
 ```bash
-proto-explorer --proto_module <compiled_protobuf_pb2_module> [--load_path </path/to/compiled/protobuf>]
+proto-explorer -m <compiled_protobuf_pb2_module> [-p </path/to/compiled/protobuf>]
 ```
 
 ## ️✍️ Example:
@@ -62,7 +62,7 @@ google/pubsub/v1/pubsub_pb2.py
 
 3. Launch Proto Explorer:
 ```bash
-proto-explorer --proto_module google.pubsub.v1.pubsub_pb2 --load_path .
+proto-explorer -m google.pubsub.v1.pubsub_pb2 -p .
 ```
 ```text
 Launching Proto Explorer...
