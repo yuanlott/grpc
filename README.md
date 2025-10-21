@@ -11,7 +11,7 @@ Proto Explorer lets you **visually explore Protobuf message hierarchies** (`*.pr
 ✅ Show `oneof` group hierarchy  
 ✅ Correctly detect `map<key, value>` fields  
 ✅ Load `_pb2.py` from custom paths  
-✅ No server or DB needed — runs locally  
+✅ Runs locally; no server or DB needed 
 
 ---
 
@@ -38,7 +38,7 @@ pip install proto-explorer
 proto-explorer -m <compiled_protobuf_pb2_module> [-p </path/to/compiled/protobuf>]
 ```
 
-## ️✍️ Example:
+## ️✍️ Example
 
 1. Clone a test Protobuf set (example: Google Pub/Sub):
 ```bash
