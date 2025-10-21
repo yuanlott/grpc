@@ -17,10 +17,7 @@ Proto Explorer lets you **visually explore Protobuf message hierarchies** (`*.pr
 
 ### 🌟 Demo Screenshot
 
-> _Coming soon – add screenshot here once UI finalized_
-> You can insert a screenshot like:
->
-> ![Proto Explorer Screenshot](docs/screenshot.png)
+![Proto Explorer Screenshot](docs/screenshot.png)
 
 ---
 
