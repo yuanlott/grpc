@@ -17,7 +17,7 @@ Proto Explorer lets you **visually explore Protobuf message hierarchies** (`*.pr
 
 ### 🌟 Demo Screenshot
 
-![Proto Explorer Screenshot](docs/screenshot.png)
+![Proto Explorer Screenshot](https://raw.githubusercontent.com/yuanlott/grpc/main/docs/screenshot.png)
 
 ---
 
