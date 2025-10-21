@@ -7,11 +7,11 @@
 
 Proto Explorer lets you **visually explore Protobuf message hierarchies** (`*.proto` files) using only the compiled Python files (`*_pb2.py`). No `.proto` files or regeneration required.
 
-✅ Expand nested message fields  
-✅ Show `oneof` group hierarchy  
-✅ Correctly detect `map<key, value>` fields  
-✅ Load `_pb2.py` from custom paths  
-✅ Runs locally; no server or DB needed 
+* Expand nested message fields  
+* Show `oneof` group hierarchy  
+* Correctly detect `map<key, value>` fields  
+* Load `_pb2.py` from custom paths  
+* Runs locally; no server or DB needed 
 
 ---
 
