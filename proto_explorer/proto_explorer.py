@@ -154,8 +154,8 @@ def show_message(desc: Descriptor, depth=0, shown=None):
         # Oneof groups
         for oneof_name, fields in oneof_fields.items():
             st.markdown(f"{' ' * depth * 2}- **{oneof_name}:** _(oneof)_")
-            nb_indent = "\u00A0" * ((depth + 1) * 2)   # non-breaking spaces for the title
-            with st.expander(f"{nb_indent}oneof options", expanded=False):
+            nb_indent = "\u00a0" * ((depth + 1) * 2)  # non-breaking spaces
+            with st.expander(f"{nb_indent}(oneof options)", expanded=False):
                 for field in fields:
                     is_map = (
                         field.type == FieldDescriptor.TYPE_MESSAGE
@@ -211,9 +211,10 @@ def main():
         page_title="Proto Explorer",
         page_icon="🧭",
         layout="wide",
-        initial_sidebar_state="expanded"
+        initial_sidebar_state="expanded",
     )
-    st.markdown("""
+    st.markdown(
+        """
         <style>
         /* Reduce space between expander rows */
         .block-container {
@@ -236,7 +237,7 @@ def main():
         }
         </style>
         """,
-        unsafe_allow_html=True
+        unsafe_allow_html=True,
     )
 
     # Header layout
