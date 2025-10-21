@@ -67,6 +67,9 @@ Launching Proto Explorer...
   You can now view your Streamlit app in your browser.
 
   Local URL: http://localhost:8501
+
+Press 'q' then Enter to quit Proto Explorer.
+
 ```
 Now open your browser and go to: http://localhost:8501/
 Enjoy exploring your Protobuf message hierarchy!
