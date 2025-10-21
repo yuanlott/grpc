@@ -101,8 +101,8 @@ def show_message(desc: Descriptor, depth=0, shown=None):
     # Regular (non-oneof) fields
     regular_fields = [f for f in desc.fields if not f.containing_oneof]
 
-    with st.expander(f"{desc.full_name}", expanded=(depth == 0)):
-        # --- Regular fields ---
+    expanded_state = st.session_state.get("expand_all", False)
+    with st.expander(f"{desc.full_name}", expanded=expanded_state or depth == 0):
         for field in regular_fields:
             # Detect map fields (they are synthetic message types with 'key' and 'value')
             is_map = (
@@ -151,9 +151,9 @@ def show_message(desc: Descriptor, depth=0, shown=None):
             else:
                 st.markdown(f"{' ' * depth * 2}{label}")
 
-        # --- Oneof groups ---
+        # Oneof Groups
         for oneof_name, fields in oneof_fields.items():
-            with st.expander(f"(oneof) {oneof_name}", expanded=False):
+            with st.expander(f"(oneof) {oneof_name}", expanded=expanded_state):
                 for field in fields:
                     is_map = (
                         field.type == FieldDescriptor.TYPE_MESSAGE
@@ -225,20 +225,22 @@ def main():
     )
 
     # Header layout
-    col1, col2 = st.columns([0.8, 0.2])
-    with col1:
-        st.title("🧭 Proto Explorer")
-        st.caption("Interactive Protobuf Explorer for compiled *_pb2.py modules")
+    st.title("🧭 Proto Explorer")
+    st.caption("Interactive Protobuf Explorer for compiled *_pb2.py modules")
 
-    with col2:
-        st.markdown(
-            f"""
-            <a href="{GITHUB_URL}" target="_blank">
-                <img src="https://img.shields.io/badge/GitHub-Repo-black?style=for-the-badge&logo=github" />
-            </a>
-            """,
-            unsafe_allow_html=True,
-        )
+
+    cols = st.columns([0.15, 0.15, 0.7])
+    with cols[0]:
+        if st.button("➕ Expand All"):
+            st.session_state["expand_all"] = True
+    with cols[1]:
+        if st.button("➖ Collapse All"):
+            st.session_state["expand_all"] = False
+
+    # Default state
+    if "expand_all" not in st.session_state:
+        st.session_state["expand_all"] = False
+
 
     with st.sidebar:
         st.markdown("### Proto Explorer")
