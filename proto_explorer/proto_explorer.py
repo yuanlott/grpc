@@ -27,6 +27,23 @@ TYPE_NAMES: Dict[int, str] = {
 }
 
 
+def validate_proto_module(module_name: str):
+    """
+    Try to import the target _pb2 module and catch dependency errors.
+    """
+    try:
+        __import__(module_name)
+        return True
+    except ModuleNotFoundError as e:
+        missing = e.name
+        raise ImportError(
+            f"Failed to import '{module_name}'. Missing dependency: '{missing}'. "
+            f"This usually means the package isn't installed or _pb2 has bad imports."
+        ) from e
+    except Exception as e:
+        raise ImportError(f"Error importing '{module_name}': {e}") from e
+
+
 def parse_args():
     parser = argparse.ArgumentParser(
         description="Interactive viewer for gRPC .proto hierarchies."
@@ -59,6 +76,8 @@ def parse_args():
             f"Cannot import module '{args.proto_module}'. "
             f"Ensure it exists and check --load_path"
         )
+
+    validate_proto_module(args.proto_module)
 
     return args
 
