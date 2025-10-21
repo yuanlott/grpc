@@ -102,7 +102,7 @@ def show_message(desc: Descriptor, depth=0, shown=None):
     regular_fields = [f for f in desc.fields if not f.containing_oneof]
 
     with st.expander(f"{desc.full_name}", expanded=(depth == 0)):
-        # --- Regular fields ---
+        # Regular fields
         for field in regular_fields:
             # Detect map fields (they are synthetic message types with 'key' and 'value')
             is_map = (
@@ -151,7 +151,7 @@ def show_message(desc: Descriptor, depth=0, shown=None):
             else:
                 st.markdown(f"{' ' * depth * 2}{label}")
 
-        # --- Oneof groups ---
+        # Oneof groups
         for oneof_name, fields in oneof_fields.items():
             st.markdown(f"{' ' * depth * 2}- **{oneof_name}:** _(oneof)_")
             nb_indent = "\u00A0" * ((depth + 1) * 2)   # non-breaking spaces for the title
@@ -215,12 +215,25 @@ def main():
     )
     st.markdown("""
         <style>
-            .block-container {
-                padding-top: 3rem;
-            }
-            .sidebar .sidebar-content {
-                background-color: #ffffff;
-            }
+        /* Reduce space between expander rows */
+        .block-container {
+            padding-top: 2.5rem;
+        }
+
+        /* Reduce space inside expanders */
+        div.streamlit-expanderHeader {
+            padding-top: 0.15rem;
+            padding-bottom: 0.15rem;
+        }
+
+        /* Reduce spacing between Markdown list rows */
+        .block-container li {
+            margin-bottom: 0.1rem;
+        }
+
+        .block-container p {
+            margin-bottom: 0.1rem;
+        }
         </style>
         """,
         unsafe_allow_html=True
