@@ -211,6 +211,19 @@ def main():
         layout="wide",
         initial_sidebar_state="expanded"
     )
+    st.markdown("""
+        <style>
+            .block-container {
+                padding-top: 3rem;
+            }
+            .sidebar .sidebar-content {
+                background-color: #ffffff;
+            }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
     # Header layout
     col1, col2 = st.columns([0.8, 0.2])
     with col1:
