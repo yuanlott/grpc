@@ -153,7 +153,9 @@ def show_message(desc: Descriptor, depth=0, shown=None):
 
         # --- Oneof groups ---
         for oneof_name, fields in oneof_fields.items():
-            with st.expander(f"(oneof) {oneof_name}", expanded=False):
+            st.markdown(f"{' ' * depth * 2}- **{oneof_name}:** _(oneof)_")
+            nb_indent = "\u00A0" * ((depth + 1) * 2)   # non-breaking spaces for the title
+            with st.expander(f"{nb_indent}oneof options", expanded=False):
                 for field in fields:
                     is_map = (
                         field.type == FieldDescriptor.TYPE_MESSAGE
