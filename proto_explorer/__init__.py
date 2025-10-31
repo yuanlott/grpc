@@ -1,9 +1,11 @@
+import os
 import requests
 import subprocess
-import threading
-import os
 import sys
+import threading
 import time
+from requests.exceptions import ConnectionError, Timeout, RequestException
+
 from .proto_explorer import parse_args
 
 
@@ -53,7 +55,7 @@ def cli_entry_point():
             try:
                 requests.get("http://localhost:8501", timeout=0.25)
                 return True
-            except requests.exceptions.ConnectionError:
+            except (ConnectionError, Timeout, RequestException):
                 time.sleep(0.1)
         return False
 
