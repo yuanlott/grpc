@@ -38,9 +38,14 @@ def compile_proto(proto_file: str | Path, out_dir: str | Path | None = None) -> 
 
     # Optionally include googleapis-common-protos, if available
     try:
-        import googleapis_common_protos
-        gapi_root = Path(googleapis_common_protos.__file__).parent
-        include_paths.append(gapi_root)
+        import google
+        # Handle namespace package
+        if hasattr(google, "__path__"):
+            gapi_root = Path(list(google.__path__)[0]).parent
+            include_paths.append(gapi_root)
+        elif hasattr(google, "__file__"):
+            gapi_root = Path(google.__file__).parent.parent
+            include_paths.append(gapi_root)
     except ImportError:
         pass
 
@@ -66,6 +71,7 @@ def compile_proto(proto_file: str | Path, out_dir: str | Path | None = None) -> 
         cmd.insert(1, f"--proto_path={inc}")
 
     print(f"Compiling proto: {proto_file.name}")
+    print(f"Protoc cmd: {cmd}")
     print("  Include paths:")
     for inc in include_paths:
         print(f"    - {inc}")
