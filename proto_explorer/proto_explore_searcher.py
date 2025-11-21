@@ -1,15 +1,16 @@
-# ==============================
-# Proto Explorer (Two Versions)
-# ==============================
+"""
+Proto Explorer (with search)
+"""
 import argparse
 import importlib
 import inspect
 import os
+import re
+from re import Pattern
 import sys
+from typing import Dict, Optional
 import streamlit as st
 from google.protobuf.descriptor import Descriptor, FieldDescriptor
-from typing import Dict
-import re
 
 GITHUB_URL = "https://github.com/yuanlott/grpc"
 
@@ -19,7 +20,11 @@ TYPE_NAMES: Dict[int, str] = {
     if k.startswith("TYPE_")
 }
 
-def validate_proto_module(module_name: str):
+
+def validate_proto_module(module_name: str) -> bool:
+    """
+    Verify that the compiled proto module exists
+    """
     try:
         __import__(module_name)
         return True
@@ -28,6 +33,7 @@ def validate_proto_module(module_name: str):
         raise ImportError(
             f"Failed to import '{module_name}'. Missing: '{missing}'."
         ) from e
+
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -44,10 +50,14 @@ def parse_args():
     return args
 
 @st.cache_resource
-def load_proto_module(module_name: str, search_path: str = None):
+def load_proto_module(module_name: str, search_path: str | None):
+    """
+    Import compiled proto module
+    """
     if search_path and search_path not in sys.path:
         sys.path.insert(0, os.path.abspath(search_path))
     return importlib.import_module(module_name)
+
 
 def list_message_types(module):
     messages = {}
@@ -55,6 +65,7 @@ def list_message_types(module):
         if isinstance(obj, Descriptor):
             messages[obj.full_name] = obj
     return messages
+
 
 def descriptor_matches(desc, regex, seen=None):
     if not regex:
@@ -79,7 +90,14 @@ def descriptor_matches(desc, regex, seen=None):
                 return True
     return False
 
-def show_message(desc, depth=0, shown=None, regex=None, filter_mode=False):
+
+def show_message(
+        desc,
+        depth: int = 0,
+        shown=None,
+        regex: Optional[Pattern] = None,
+        filter_mode: bool = False
+):
     if shown is None:
         shown = set()
     if desc.full_name in shown:
@@ -87,13 +105,25 @@ def show_message(desc, depth=0, shown=None, regex=None, filter_mode=False):
     shown.add(desc.full_name)
 
     match_here = regex.search(desc.full_name) if regex else False
-    expand = depth == 0 or (regex and descriptor_matches(desc, regex))
 
-    header = desc.full_name
+    # expander TITLE → must be plain
+    header_plain = desc.full_name
+    # expander BODY → can contain HTML highlighting
+    header_display = desc.full_name
     if match_here:
-        header = regex.sub(lambda m: f"<mark>{m.group()}</mark>", header)
+        header_display = regex.sub(
+            lambda m: f"<mark>{m.group()}</mark>", header_display
+        )
 
-    with st.expander(header, expanded=expand):
+    expand = bool(depth == 0 or (regex and descriptor_matches(desc, regex)))
+
+    with st.expander(header_plain, expanded=expand):
+        # Show highlighted header inside if matched
+        if regex:
+            st.markdown(f"**{header_display}**", unsafe_allow_html=True)
+        else:
+            st.markdown(f"**{header_plain}**")
+
         for field in desc.fields:
             is_map = (
                 field.type == FieldDescriptor.TYPE_MESSAGE
@@ -118,9 +148,18 @@ def show_message(desc, depth=0, shown=None, regex=None, filter_mode=False):
 
             label = f"- {field.name}: {type_name}"
             match_field = regex.search(label) if regex else False
-            if regex and not match_field and not descriptor_matches(field.message_type, regex) if (field.type==FieldDescriptor.TYPE_MESSAGE and field.message_type) else False:
-                if filter_mode:
-                    continue
+
+            if (
+                field.type == FieldDescriptor.TYPE_MESSAGE and
+                field.message_type is not None
+            ):
+                if (
+                    regex
+                    and not match_field
+                    and not descriptor_matches(field.message_type, regex)
+                ):
+                    if filter_mode:
+                        continue
 
             if match_field:
                 label = regex.sub(lambda m: f"<mark>{m.group()}</mark>", label)
@@ -128,7 +167,9 @@ def show_message(desc, depth=0, shown=None, regex=None, filter_mode=False):
             st.markdown(" " * depth * 2 + label, unsafe_allow_html=True)
 
             if field.type == FieldDescriptor.TYPE_MESSAGE and not is_map:
-                show_message(field.message_type, depth+1, shown, regex, filter_mode)
+                show_message(
+                    field.message_type, depth+1, shown, regex, filter_mode
+                )
 
 
 def main():
@@ -154,6 +195,7 @@ def main():
         regex = None
 
     show_message(messages[selected], regex=regex, filter_mode=filter_mode)
+
 
 if __name__ == "__main__":
     main()

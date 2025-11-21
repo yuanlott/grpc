@@ -1,11 +1,14 @@
+"""
+Proto Explorer (no search)
+"""
 import argparse
 import importlib
 import inspect
 import os
 import sys
+from typing import Dict
 import streamlit as st
 from google.protobuf.descriptor import Descriptor, FieldDescriptor
-from typing import Dict
 
 
 GITHUB_URL = "https://github.com/yuanlott/grpc"
