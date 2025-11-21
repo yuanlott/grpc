@@ -25,7 +25,7 @@ def cli_entry_point():
     # 1. Find the absolute path to app.py relative to this file
     # This ensures the script is found reliably after installation.
     current_dir = os.path.dirname(__file__)
-    app_path = os.path.join(current_dir, "proto_explorer.py")
+    app_path = os.path.join(current_dir, "proto_explore_searcher.py")
 
     # 2. Build the command:
     # ['python', '-m', 'streamlit', 'run', '/path/to/app.py', '--', '--load_path=...', ...]
