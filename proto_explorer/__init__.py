@@ -1,12 +1,15 @@
+"""
+Entry point definitions
+"""
 import os
-import requests
 import subprocess
 import sys
 import threading
 import time
+import requests
 from requests.exceptions import ConnectionError, Timeout, RequestException
 
-from .proto_explorer import parse_args
+from .proto_explore_searcher import parse_args
 
 
 def cli_entry_point():
