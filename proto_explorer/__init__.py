@@ -7,7 +7,11 @@ import sys
 import threading
 import time
 import requests
-from requests.exceptions import ConnectionError, Timeout, RequestException
+from requests.exceptions import (
+    ConnectionError as RequestConnectionError,
+    Timeout,
+    RequestException
+)
 
 from .proto_explore_searcher import parse_args
 
@@ -31,7 +35,8 @@ def cli_entry_point():
     app_path = os.path.join(current_dir, "proto_explore_searcher.py")
 
     # 2. Build the command:
-    # ['python', '-m', 'streamlit', 'run', '/path/to/app.py', '--', '--load_path=...', ...]
+    # ['python', '-m', 'streamlit', 'run', '/path/to/app.py',
+    # '--', '--load_path=...', ...]
     command = [
         sys.executable,
         "-m",
@@ -58,7 +63,7 @@ def cli_entry_point():
             try:
                 requests.get("http://localhost:8501", timeout=0.25)
                 return True
-            except (ConnectionError, Timeout, RequestException):
+            except (RequestConnectionError, Timeout, RequestException):
                 time.sleep(0.1)
         return False
 
