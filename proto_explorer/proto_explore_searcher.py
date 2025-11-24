@@ -8,7 +8,7 @@ import os
 import re
 from re import Pattern
 import sys
-from typing import Dict, Optional
+from typing import Dict
 import streamlit as st
 from google.protobuf.descriptor import Descriptor, FieldDescriptor
 
@@ -36,6 +36,9 @@ def validate_proto_module(module_name: str) -> bool:
 
 
 def parse_args():
+    """
+    Parse command line arguments
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument("--load_path", "-p")
     parser.add_argument("--proto_module", "-m", required=True)
@@ -94,8 +97,8 @@ def descriptor_matches(desc, regex, seen=None):
 def show_message(
         desc,
         depth: int = 0,
-        shown=None,
-        regex: Optional[Pattern] = None,
+        shown: set[str] | None = None,
+        regex: Pattern | None = None,
         filter_mode: bool = False
 ):
     if shown is None:
